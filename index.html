@@ -1,0 +1,337 @@
+<!--
+WebARマーカー読み込み後、モーダルを表示
+モーダル内OKボタンを押すことで開始される
+（アニメーションがある場合、マーカー読み込み時点でアニメーションが開始、モーダル後ろですでに動いていることになる）
+-->
+
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta aframe-injected="" name="mobile-web-app-capable" content="yes">
+  <meta aframe-injected="" name="theme-color" content="black">
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+
+  <script>
+    const myShowAvatar = () => {
+      const myAvatar = document.querySelector("#my-avatar");
+      myAvatar.setAttribute("visible", true);
+
+      const video = document.querySelector("#video");
+      video.play();
+
+      const model = document.querySelector("#showAvatarModel");
+      model.setAttribute("animation-mixer", "clip: *; loop: repeat"); // すべてのアニメーションを再生するように設定
+    }
+
+    const stopAllMedia = () => {
+      const video = document.querySelector("#video");
+      video.pause();
+      video.currentTime = 0;
+
+      const model = document.querySelector("#showAvatarModel");
+      model.removeAttribute("animation-mixer"); // アニメーションを停止するために属性を削除
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById("modal");
+      const okButton = document.getElementById("ok-button");
+
+      const showModal = () => {
+        modal.style.display = "block";
+        stopAllMedia();
+      };
+
+      const startAR = () => {
+        modal.style.display = "none";
+        myShowAvatar();
+      };
+
+      okButton.addEventListener('click', startAR);
+
+      AFRAME.registerComponent('mytarget', {
+        init: function() {
+          this.el.addEventListener('targetFound', event => {
+            console.log("target found");
+            showModal();
+          });
+          this.el.addEventListener('targetLost', event => {
+            console.log("target lost");
+          });
+        }
+      });
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+    .example-container {
+      overflow: hidden;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    #example-scanning-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 2;
+    }
+    @media (min-aspect-ratio: 1/1) {
+      #example-scanning-overlay .inner {
+        width: 50vh;
+        height: 50vh;
+      }
+    }
+    @media (max-aspect-ratio: 1/1) {
+      #example-scanning-overlay .inner {
+        width: 80vw;
+        height: 80vw;
+      }
+    }
+    #example-scanning-overlay .inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background:
+        linear-gradient(to right, white 10px, transparent 10px) 0 0,
+        linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+        linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+        linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+        linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+        linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+        linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+        linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+      background-repeat: no-repeat;
+      background-size: 40px 40px;
+    }
+    #example-scanning-overlay.hidden {
+      display: none;
+    }
+    #example-scanning-overlay img {
+      opacity: 0.6;
+      width: 90%;
+      align-self: center;
+    }
+    #example-scanning-overlay .inner .scanline {
+      position: absolute;
+      width: 100%;
+      height: 10px;
+      background: white;
+      animation: move 2s linear infinite;
+    }
+    @keyframes move {
+      0%, 100% { top: 0% }
+      50% { top: calc(100% - 10px) }
+    }
+  </style>
+
+  <style>
+    .mindar-ui-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 2
+    }
+    .mindar-ui-overlay.hidden {
+      display: none
+    }
+    .mindar-ui-loading .loader {
+      border: 16px solid #222;
+      border-top: 16px solid white;
+      opacity: .8;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite
+    }
+    @keyframes spin {
+      0% { transform: rotate(0) }
+      to { transform: rotate(360deg) }
+    }
+    .mindar-ui-compatibility .content {
+      background: black;
+      color: #fff;
+      opacity: .8;
+      text-align: center;
+      margin: 20px;
+      padding: 20px;
+      min-height: 50vh
+    }
+    @media (min-aspect-ratio: 1/1) {
+      .mindar-ui-scanning .scanning {
+        width: 50vh;
+        height: 50vh
+      }
+    }
+    @media (max-aspect-ratio: 1/1) {
+      .mindar-ui-scanning .scanning {
+        width: 80vw;
+        height: 80vw
+      }
+    }
+    .mindar-ui-scanning .scanning .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      opacity: .8;
+      background:
+        linear-gradient(to right, white 10px, transparent 10px) 0 0,
+        linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+        linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+        linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+        linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+        linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+        linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+        linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+      background-repeat: no-repeat;
+      background-size: 40px 40px
+    }
+    .mindar-ui-scanning .scanning .inner .scanline {
+      position: absolute;
+      width: 100%;
+      height: 10px;
+      background: white;
+      animation: move 2s linear infinite
+    }
+    @keyframes move {
+      0%, to { top: 0% }
+      50% { top: calc(100% - 10px) }
+    }
+  </style>
+
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .modal-img {
+      max-width: 100%;
+    }
+    .modal-button {
+      background-color: #f8e85e;
+      display: block;
+      margin: 6% auto 0;
+      padding: 0.75rem 2rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.2rem;
+      border: solid 0.3rem #222;
+      border-radius: 0.3rem;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="color: #f00;">Ver1.3.6</div>
+
+  <div class="example-container">
+    <div id="example-scanning-overlay" class="">
+      <div class="inner">
+        <img src="./assets/card-example/ScanningImageTarget.png">
+        <div class="scanline"></div>
+      </div>
+    </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <!--span class="close">&times;</span-->
+        <img class="modal-img" src="./assets/card-example/modal.png" alt="">
+        <!--p>AR Experience is ready. Click OK to start.</p-->
+        <button id="ok-button" class="modal-button">OK</button>
+      </div>
+    </div>
+
+    <a-scene mindar-image="filterMinCF:0.001; filterBeta: 0.01; imageTargetSrc: ./assets/card-example/card.mind; showStats: false; uiScanning: #example-scanning-overlay;"
+             embedded="" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+             inspector="" keyboard-shortcuts="" screenshot="">
+      <a-assets>
+        <img id="card" src="./assets/card-example/card.png">
+        <video id="video" autoplay loop="true" src="./assets/card-example/card.mp4"></video>
+        <a-asset-item id="avatarModel" src="./assets/card-example/softmind/scene.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="far: 10000; objects: .clickable" camera="" rotation="" wasd-controls="">
+      </a-camera>
+
+      <a-entity mytarget id="" mindar-image-target="targetIndex: 0">
+        <a-entity visible="false" id="my-avatar" position="0 0 -0.01">
+          <a-plane src="#card" position="0 0 0" rotation="0 0 0" scale="1.01 1.01 1.01" height="0.552" width="1"></a-plane>
+          <a-video src="#video" width="16" height="9" position="0 0 0.01" scale="0.063 0.063 0.063"></a-video>
+          <a-gltf-model id="showAvatarModel" rotation="90 0 0" position="0 0.25 0.1" scale="0.05 0.05 0.05" src="#avatarModel" 
+                        animation="property: position; to: 0 0.1 0.4; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" animation-mixer></a-gltf-model>
+        </a-entity>
+      </a-entity>
+
+      <canvas class="a-canvas" data-aframe-canvas="true" data-engine="three.js r147" width="54" height="960"></canvas>
+      <div class="a-loader-title" style="display: none;"></div>
+      <a-entity light="" position="" data-aframe-default-light="" aframe-injected=""></a-entity>
+      <a-entity light="" position="" data-aframe-default-light="" aframe-injected=""></a-entity>
+    </a-scene>
+    <video autoplay="" muted="" playsinline="" width="640" height="480" style="position: absolute; top: 0px; left: -653px; z-index: -2; width: 1364px; height: 1023px;"></video>
+  </div>
+
+  <div class="mindar-ui-overlay mindar-ui-loading hidden">
+    <div class="loader">
+    </div>
+  </div>
+  <div class="mindar-ui-overlay mindar-ui-compatibility hidden">
+    <div class="content">
+      <h1>Failed to launch :(</h1>
+      <p>Looks like your device/browser is not compatible.</p>
+      <br><br>
+      <p>Please try the following recommended browsers:</p>
+      <p>For Android device - Chrome</p>
+      <p>For iOS device - Safari</p>
+    </div>
+  </div>
+</body>
+
+</html>
