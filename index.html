@@ -269,7 +269,7 @@ WebARマーカー読み込み後、モーダルを表示
 </head>
 
 <body>
-  <div style="color: #f00;">Ver1.0.6</div>
+  <div style="color: #f00;">Ver1.0.7</div>
 
   <div class="example-container">
     <div id="example-scanning-overlay" class="">
@@ -293,7 +293,6 @@ WebARマーカー読み込み後、モーダルを表示
              inspector="" keyboard-shortcuts="" screenshot="">
       <a-assets>
         <video id="video" autoplay loop="true" src="./assets/card-example/render.mp4"></video>
-        <a-asset-item id="avatarModel" src="./assets/card-example/softmind/scene.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -303,8 +302,6 @@ WebARマーカー読み込み後、モーダルを表示
       <a-entity mytarget id="" mindar-image-target="targetIndex: 0">
         <a-entity visible="false" id="my-avatar" position="0 0 -0.01">
           <a-video src="#video" width="20" height="27" position="0 0 0.01" scale="0.063 0.063 0.063"></a-video>
-          <a-gltf-model id="showAvatarModel" rotation="90 0 0" position="0 0.25 0.1" scale="0.05 0.05 0.05" src="#avatarModel" 
-                        animation="property: position; to: 0 0.1 0.4; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" animation-mixer></a-gltf-model>
         </a-entity>
       </a-entity>
 
