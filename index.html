@@ -243,15 +243,15 @@ WebARマーカー読み込み後、モーダルを表示
       max-width: 100%;
     }
     .modal-button {
-      background-color: #f8e85e;
+      background-color: #fefefe;
       display: block;
       margin: 6% auto 0;
       padding: 0.75rem 2rem;
       font-size: 1.5rem;
       font-weight: 800;
-      letter-spacing: 0.2rem;
-      border: solid 0.3rem #222;
-      border-radius: 0.3rem;
+      /* letter-spacing: 0.2rem; */
+      /* border: solid 0.3rem #222; */
+      /* border-radius: 0.3rem; */
     }
     .close {
       color: #aaa;
@@ -269,7 +269,7 @@ WebARマーカー読み込み後、モーダルを表示
 </head>
 
 <body>
-  <div style="color: #f00;">Ver1.0.9</div>
+  <div style="color: #f00;">Ver1.1.0</div>
 
   <div class="example-container">
     <div id="example-scanning-overlay" class="">
@@ -284,7 +284,7 @@ WebARマーカー読み込み後、モーダルを表示
         <!--span class="close">&times;</span-->
         <img class="modal-img" src="./assets/card-example/modal.png" alt="">
         <!--p>AR Experience is ready. Click OK to start.</p-->
-        <button id="ok-button" class="modal-button">OK</button>
+        <button id="ok-button" class="modal-button">×</button>
       </div>
     </div>
 
@@ -301,7 +301,7 @@ WebARマーカー読み込み後、モーダルを表示
 
       <a-entity mytarget id="" mindar-image-target="targetIndex: 0">
         <a-entity visible="false" id="my-avatar" position="0 0 -0.01">
-          <a-video src="#video" width="20" height="27" position="0 0 0.01" scale="0.058 0.058 0.058"></a-video>
+          <a-video src="#video" width="20" height="27" position="0 0 0.01" scale="0.053 0.053 0.053"></a-video>
         </a-entity>
       </a-entity>
 
