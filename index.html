@@ -269,7 +269,7 @@ WebARマーカー読み込み後、モーダルを表示
 </head>
 
 <body>
-  <div style="color: #f00;">Ver1.0.1</div>
+  <div style="color: #f00;">Ver1.0.2</div>
 
   <div class="example-container">
     <div id="example-scanning-overlay" class="">
@@ -292,9 +292,8 @@ WebARマーカー読み込み後、モーダルを表示
              embedded="" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
              inspector="" keyboard-shortcuts="" screenshot="">
       <a-assets>
-        <!-- <img id="card" src="./assets/card-example/card.png"> -->
         <video id="video" autoplay loop="true" src="./assets/video/Render/render.mp4"></video>
-        <!-- <a-asset-item id="avatarModel" src="./assets/card-example/softmind/scene.glb"></a-asset-item> -->
+        <a-asset-item id="avatarModel" src="./assets/glb/canbadge01-a.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -303,7 +302,6 @@ WebARマーカー読み込み後、モーダルを表示
 
       <a-entity mytarget id="" mindar-image-target="targetIndex: 0">
         <a-entity visible="false" id="my-avatar" position="0 0 -0.01">
-          <a-plane src="#card" position="0 0 0" rotation="0 0 0" scale="1.01 1.01 1.01" height="0.552" width="1"></a-plane>
           <a-video src="#video" width="20" height="27" position="0 0 0.01" scale="0.063 0.063 0.063"></a-video>
           <a-gltf-model id="showAvatarModel" rotation="90 0 0" position="0 0.25 0.1" scale="0.05 0.05 0.05" src="#avatarModel" 
                         animation="property: position; to: 0 0.1 0.4; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" animation-mixer></a-gltf-model>
